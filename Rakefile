@@ -11,7 +11,7 @@ end
 deps = File.open("#{name}.fls").to_a.select{|i| i.start_with? "INPUT"}.map{|i| i.split(" ")[1].chomp} + ["bib.bib"]
 file "#{name}.pdf" => deps do |t|
 	sh "#{latex} #{name}"
-	sh "grep -q bibcite #{name}.aux && bibtex #{name} || echo skipping bibtex" #only run bibtex if needed
+	sh "grep -q citation #{name}.aux && bibtex #{name} || echo skipping bibtex" #only run bibtex if needed
 	sh "#{latex} #{name}"
 	sh "#{latex} -recorder #{name}"
 end
@@ -28,3 +28,10 @@ task :all => "#{name}.pdf" do |t|
 end
 
 task :default => :all
+
+task :clean  do |t|
+        ["bbl","fls","pdf","log","aux","blg"].each do |ext|
+                rm name+"."+ext , :force => true
+        end
+        rm "bib.bib"
+end
