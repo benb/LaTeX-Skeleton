@@ -1,4 +1,4 @@
-name="doc"
+name="doc" # if you change this you might want to edit .gitignore too
 
 latex="pdflatex --interaction batchmode"
 file "#{name}.fls" => "#{name}.tex" do |t|
